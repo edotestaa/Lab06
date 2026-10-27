@@ -63,7 +63,10 @@ class View:
         pulsante_conferma_responsabile = ft.Button("Conferma", on_click=self.controller.conferma_responsabile)
 
         # Altri Pulsanti da implementare (es. "Mostra" e "Cerca")
-        # TODO
+        testo = ft.Text("Strumenti", size=20),
+        bottone_mostra = ft.Button("Mostra", on_click = self.controller.mostra_strumenti)
+        riga_sezione3 = ft.Row[(testo, bottone_mostra)]
+
 
         # --- LAYOUT ---
         self.page.add(
@@ -82,7 +85,10 @@ class View:
             ft.Divider(),
 
             # Sezione 3
-            # TODO
+
+            riga_sezione3,
+            self.lista_strumenti,
+            ft.Divider(),
 
             # Sezione 4
             # TODO

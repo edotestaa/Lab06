@@ -31,11 +31,7 @@ class DepositoStrumenti:
         self._responsabile = responsabile
 
     def get_strumenti(self) -> list[Strumento] | None:
-        """
-            Funzione che legge tutti gli strumenti nel database
-            :return: una lista con tutti gli strumenti presenti oppure None
-        """
-        # TODO
+        return self._database.get_all_strumenti()
 
     def cerca_strumenti_per_tipo(self, tipo) -> list[Strumento] | None:
         """
