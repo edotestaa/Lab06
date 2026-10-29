@@ -1,3 +1,4 @@
+
 from database.DB_connect import get_connection
 from model.strumento import Strumento
 from model.prestito import Prestito
@@ -8,11 +9,14 @@ from model.prestito import Prestito
     - Si occupa di gestire lo stato dell'applicazione
     - Interagisce con il database
 '''
+from database.DB_connect import get_connection
 
 class DepositoStrumenti:
     def __init__(self, nome, responsabile):
         self._nome = nome
         self._responsabile = responsabile
+
+
 
     @property
     def nome(self):
@@ -31,7 +35,17 @@ class DepositoStrumenti:
         self._responsabile = responsabile
 
     def get_strumenti(self) -> list[Strumento] | None:
-        return self._database.get_all_strumenti()
+        cnx = get_connection()
+        if cnx is None:
+            return []
+
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM strumento")
+        risultati = cursor.fetchall()
+
+        cursor.close()
+        cnx.close()
+        return risultati
 
     def cerca_strumenti_per_tipo(self, tipo) -> list[Strumento] | None:
         """
@@ -39,4 +53,14 @@ class DepositoStrumenti:
             :param tipo: il tipo dello strumento (es. "Chitarra")
             :return: una lista con tutti gli strumenti del tipo indicato oppure None
         """
-        # TODO
+        cnx = get_connection()
+        if cnx is None:
+            return []
+        cursor = cnx.cursor(dictionary=True)
+        query = "SELECT * FROM strumento WHERE tipo = %s ORDER BY marca ASC"
+        cursor.execute(query, (tipo.strip(),))
+        risultati = cursor.fetchall()
+        cursor.close()
+        cnx.close()
+        return risultati
+

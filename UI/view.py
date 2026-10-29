@@ -1,4 +1,8 @@
+from tkinter import Text
+
 import flet as ft
+from flet.controls import alignment
+
 from UI.alert import AlertManager
 
 '''
@@ -63,9 +67,11 @@ class View:
         pulsante_conferma_responsabile = ft.Button("Conferma", on_click=self.controller.conferma_responsabile)
 
         # Altri Pulsanti da implementare (es. "Mostra" e "Cerca")
-        testo = ft.Text("Strumenti", size=20),
-        bottone_mostra = ft.Button("Mostra", on_click = self.controller.mostra_strumenti)
-        riga_sezione3 = ft.Row[(testo, bottone_mostra)]
+        self.lista_strumenti = ft.ListView(expand=True, spacing=5, padding=10, auto_scroll=True)
+        pulsante_mostra = ft.Button("Mostra", on_click = self.controller.mostra_strumenti)
+        pulsante_cerca = ft.Button("Cerca", on_click = self.controller.cerca_strumenti)
+        self.barra_ricerca = ft.TextField(label="Tipo")
+        self.lista_risultati = ft.ListView(expand=True, spacing=5, padding=10, auto_scroll=True)
 
 
         # --- LAYOUT ---
@@ -85,14 +91,18 @@ class View:
             ft.Divider(),
 
             # Sezione 3
-
-            riga_sezione3,
+            ft.Row(controls = [ft.Text("Strumenti", size=20),pulsante_mostra]),
             self.lista_strumenti,
             ft.Divider(),
 
             # Sezione 4
-            # TODO
-        )
+
+            ft.Row(
+                   controls=[ ft.Text("Cerca Strumento Per Tipo", size=20)],
+                   alignment = ft.MainAxisAlignment.CENTER),
+            ft.Row(controls = [self.barra_ricerca, pulsante_cerca]),
+            self.lista_risultati
+        ),
 
     def cambia_tema(self, e):
         self.page.theme_mode = ft.ThemeMode.DARK if self.toggle_cambia_tema.value else ft.ThemeMode.LIGHT
